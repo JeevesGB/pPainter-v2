@@ -4,13 +4,12 @@ import struct
 import PyQt6
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QFileDialog, QLabel, QColorDialog, QToolBar,
-    QVBoxLayout, QWidget, QDockWidget, QTableWidget, QTableWidgetItem, QHeaderView, QSizePolicy, QInputDialog
+    QVBoxLayout, QWidget, QDockWidget, QTableWidget, QTableWidgetItem,
+    QHeaderView, QSizePolicy, QInputDialog, QListWidget, QListWidgetItem
 )
 from PyQt6.QtGui import QImage, QPixmap, QColor, QPalette, QAction
 from PyQt6.QtCore import Qt
 from PIL import Image
-
-
 
 def prompt_tim_bpp(parent):
     items = ["4 bpp (16 colors)", "8 bpp (256 colors)", "16 bpp (High Color)", "24 bpp (True Color)"]
@@ -224,10 +223,13 @@ class MainWindow(QMainWindow):
         self.create_actions()
         self.create_toolbar()
         self.create_palette_editor()
+        self.create_file_browser()
 
     def create_actions(self):
         open_act = QAction("Open...", self)
         open_act.triggered.connect(self.open_file)
+        open_folder_act = QAction("Open Folder...", self)  
+        open_folder_act.triggered.connect(self.open_folder)
         save_act = QAction("Save", self)
         save_act.triggered.connect(self.save_file)
         save_as_act = QAction("Save As...", self)
@@ -236,9 +238,70 @@ class MainWindow(QMainWindow):
         export_png_act.triggered.connect(self.export_png)
         file_menu = self.menuBar().addMenu("File")
         file_menu.addAction(open_act)
+        file_menu.addAction(open_folder_act) 
         file_menu.addAction(save_act)
         file_menu.addAction(save_as_act)
         file_menu.addAction(export_png_act)
+        
+    def create_file_browser(self):
+        self.file_dock = QDockWidget("Files", self)
+        self.file_list = QListWidget()
+        self.file_list.itemDoubleClicked.connect(self.open_file_from_list)
+        self.file_dock.setWidget(self.file_list)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.file_dock)
+    #    self.file_dock.hide()
+        
+    def open_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder")
+        if not folder:
+            return
+        self.file_list.clear()
+        exts = (".tim", ".png", ".jpg", ".bmp")
+        for name in sorted(os.listdir(folder)):
+           if name.lower().endswith(exts):
+                full_path = os.path.join(folder, name)
+                item = QListWidgetItem(name)  # show only filename
+                item.setData(Qt.ItemDataRole.UserRole, full_path)  # keep full path hidden
+                self.file_list.addItem(item)
+        if self.file_list.count() > 0:
+            self.file_dock.show()
+
+    def open_file_from_list(self, item):
+        path = item.data(Qt.ItemDataRole.UserRole)  # get full path from hidden data
+        self.open_file_from_path(path)
+
+    def open_file_from_path(self, path):
+        # Reuse your existing open_file logic but without QFileDialog
+        if path.lower().endswith(".tim"):
+            try:
+                info = load_tim(path)
+            except Exception as e:
+                print("Error:", e); return
+            self.image_info = info; self.current_file = path
+            if info['clut'] is not None and info['bpp'] in (4, 8):
+                self.palette_mode = True; self.brush_index = 0
+                self.populate_palette_table(); self.palette_dock.show()
+            else:
+                self.palette_mode = False; self.palette_dock.hide()
+            self.update_canvas()
+        else:
+            try:
+                pil_img = Image.open(path).convert("RGBA")
+            except Exception as e:
+                print("Error:", e); return
+            width, height = pil_img.size
+            pixels = list(pil_img.getdata())
+            rows = []
+            for y in range(height):
+                row = []
+                for x in range(width):
+                    r, g, b, a = pixels[y*width + x]
+                    row.append((r, g, b))
+                rows.append(row)
+            self.image_info = {'bpp':24, 'clut':None, 'data':rows,
+                               'width':width, 'height':height}
+            self.current_file = path; self.palette_mode = False; self.palette_dock.hide()
+            self.update_canvas()
 
     def create_toolbar(self):
         toolbar = QToolBar("Tools", self)
@@ -313,7 +376,7 @@ class MainWindow(QMainWindow):
         self.palette_table.cellClicked.connect(self.select_palette_color)
         self.palette_dock.setWidget(self.palette_table)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.palette_dock)
-        self.palette_dock.hide()
+    #    self.palette_dock.hide()
 
     def open_file(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open Image", "",
@@ -622,6 +685,6 @@ class MainWindow(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = MainWindow()
-    win.resize(800,800)
+    win.resize(1920,1000)
     win.show()
     sys.exit(app.exec())
