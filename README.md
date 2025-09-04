@@ -33,7 +33,8 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 ## Credits
 
 - [GTModding-Hub](https://nenkai.github.io/gt-modding-hub/ps1/gt2/tools/#tools)
-- [Adeyblue-&-Pez2k](https://www.airesoft.co.uk/gt2volexploder)
+- [Adeyblue](https://github.com/adeyblue)
+- [Pez2k](https://github.com/pez2k)
 - [GTModding-Discord](https://discord.com/invite/YbJjbYEKzB)
 
 ## Requirements
