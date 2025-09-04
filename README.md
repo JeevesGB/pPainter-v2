@@ -1,7 +1,8 @@
 
-<p align="centre">
-<img src="ico.png" alt="App Icon" width="100"/>
+<p align="center">
+  <img src="ico.png" alt="pPainter Logo" width="200"/>
 </p>
+
 
 # TIMage (pPainter)
 
