@@ -2,7 +2,7 @@
 
 A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette manipulation, and exporting to common image formats.
 
-## How To
+## How To Use
 
 - Run [GTVolTools](https://github.com/adeyblue/GTVolTools/releases/tag/v1) 
 
@@ -12,6 +12,16 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 
 - Load the TIM file you wish to edit which is located in the [carwheel] folder. 
 
+- Save file 
+
+- In [GTVolTools](https://github.com/adeyblue/GTVolTools/releases/tag/v1) select "Make GT2 VOL from Directory" 
+
+- Once process is finished replace the VOL from and original copy of Gran Turismo 2 NTSC using [UltraISO](https://www.ultraiso.com/download.html)
+
+- Save As (Give it your own name) 
+
+- Run the new .BIN file in duckstation. 
+
 
 ## Features
 
@@ -19,6 +29,12 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 - Palette editing for indexed images
 - Export to PNG, 
 - Save as TIM or standard image formats 
+
+## Credits
+
+- [GTModding-Hub](https://nenkai.github.io/gt-modding-hub/ps1/gt2/tools/#tools)
+- [Adeyblue-&-Pez2k](https://www.airesoft.co.uk/gt2volexploder)
+- [GTModding-Discord](https://discord.com/invite/YbJjbYEKzB)
 
 ## Requirements
 
