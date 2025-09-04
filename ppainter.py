@@ -205,7 +205,7 @@ class Canvas(QLabel):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("ppainter-indev")
+        self.setWindowTitle("ppainter-v1.0.1")
         self.image_info = None
         self.current_file = None
         self.palette_mode = False
@@ -215,6 +215,17 @@ class MainWindow(QMainWindow):
         self.brush_index = 0
 
         self.canvas = Canvas(self)
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        bg_path = os.path.join(app_dir, "ico.png").replace("\\", "/")
+
+        self.canvas.setStyleSheet(
+            f"QLabel {{"
+            f"background-image: url({bg_path});"
+            f"background-repeat: no-repeat;"
+            f"background-position: center;"
+            f"background-color: #f0f0f0;"
+            f"}}"
+        )
         self.canvas.setBackgroundRole(QPalette.ColorRole.Base)
         self.canvas.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
         self.canvas.setScaledContents(True)
@@ -685,6 +696,6 @@ class MainWindow(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     win = MainWindow()
-    win.resize(1920,1000)
+    win.resize(1500,1000)
     win.show()
     sys.exit(app.exec())
