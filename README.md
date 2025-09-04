@@ -1,6 +1,6 @@
-![App Icon](ico.png)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+<img src="ico.png" alt="App Icon" width="100"/>
 
 # TIMage (pPainter)
 
