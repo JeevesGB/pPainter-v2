@@ -46,6 +46,20 @@
 - [Pez2k](https://github.com/pez2k)
 - [GTModding-Discord](https://discord.com/invite/YbJjbYEKzB)
 
+## Screenshots:
+
+<p align="center">
+  <img src="docs/img-1.png" alt="img-1" width="800"/>
+</p>
+
+<p align="center">
+  <img src="docs/img-2.png" alt="img-2" width="800"/>
+</p>
+
+<p align="center">
+  <img src="docs/img-3.png" alt="img-3" width="800"/>
+</p>
+
 ## Requirements:
 
 - Python 3.8+
@@ -91,20 +105,6 @@ python ppainter.py
 - `ico.ico`, `ico.png` - Application icons
 - `ppainter.spec` - PyInstaller build specification (optional)
 - `build/` - Build output directory
-
-## Screenshots:
-
-<p align="center">
-  <img src="docs/img-1.png" alt="img-1" width="800"/>
-</p>
-
-<p align="center">
-  <img src="docs/img-2.png" alt="img-2" width="800"/>
-</p>
-
-<p align="center">
-  <img src="docs/img-3.png" alt="img-3" width="800"/>
-</p>
 
 ## License
 
