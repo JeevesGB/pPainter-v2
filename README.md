@@ -4,13 +4,13 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 
 ## How To
 
-- Run [GTVolTools] : (https://github.com/adeyblue/GTVolTools/releases/tag/v1) 
+- Run [GTVolTools](https://github.com/adeyblue/GTVolTools/releases/tag/v1) 
 
 - Extract [VOL] as instructed
 
-- Once your VOL is extracted open [pPainter] 
+- Once your VOL is extracted open [pPainter](https://github.com/JeevesGB/pPainter-v2/releases/tag/ppaint-v1.0.2)
 
-- Load the [TIM] file you wish to edit which is located in the [carwheel] folder. 
+- Load the TIM file you wish to edit which is located in the [carwheel] folder. 
 
 
 ## Features
