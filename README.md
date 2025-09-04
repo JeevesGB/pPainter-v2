@@ -17,9 +17,8 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 
 - Open and edit PSX TIM files (4/8/16/24 bpp)
 - Palette editing for indexed images
-- Brush, eraser, fill, and color picker tools
-- Export to PNG, BMP, JPEG
-- Save as TIM or standard image formats
+- Export to PNG, 
+- Save as TIM or standard image formats 
 
 ## Requirements
 
