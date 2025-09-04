@@ -1,12 +1,12 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-#
+
 <p align="center">
   <img src="ico.png" alt="pPainter Logo" width="200"/>
 </p>
 
+#
 
-# TIMage (pPainter)
+## TIMage (pPainter)
 
 A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette manipulation, and exporting to common image formats.
 
@@ -96,3 +96,4 @@ python ppainter.py
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
