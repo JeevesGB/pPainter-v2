@@ -6,6 +6,18 @@
 
 #
 
+## 
+- [What is pPainter?](#what-is-ppainter)
+- [How To Use](#how-to-use)
+- [Features](#features)
+- [Credits](#credits)
+- [Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Running](#running)
+- [Building the Executable (.exe)](#building-the-executable-exe)
+- [Files](#files)
+- [License](#license)
+
 ## "What is pPainter?"
 
   A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette manipulation, and exporting to common image formats.
