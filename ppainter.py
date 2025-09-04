@@ -237,43 +237,49 @@ class MainWindow(QMainWindow):
         self.create_palette_editor()
         self.create_file_browser()
 
+    # ...existing code...
     def create_actions(self):
         app_dir = os.path.dirname(os.path.abspath(__file__))
+        icon_dir = os.path.join(app_dir, "icons")
 
-        self.open_act = QAction(QIcon(os.path.join(app_dir, "icons/open.png")), "", self)
+        self.open_act = QAction(QIcon(os.path.join(icon_dir, "open.png")), "", self)
         self.open_act.setToolTip("Open File")
         self.open_act.triggered.connect(self.open_file)
 
-        self.open_folder_act = QAction(QIcon(os.path.join(app_dir, "icons/folder.png")), "", self)
+        self.open_folder_act = QAction(QIcon(os.path.join(icon_dir, "folder.png")), "", self)
         self.open_folder_act.setToolTip("Open Folder")
         self.open_folder_act.triggered.connect(self.open_folder)
 
-        self.save_act = QAction(QIcon(os.path.join(app_dir, "icons/save.png")), "", self)
+        self.save_act = QAction(QIcon(os.path.join(icon_dir, "save.png")), "", self)
         self.save_act.setToolTip("Save")
         self.save_act.triggered.connect(self.save_file)
 
-        self.save_as_act = QAction(QIcon(os.path.join(app_dir, "icons/save_as.png")), "", self)
+        self.save_as_act = QAction(QIcon(os.path.join(icon_dir, "save_as.png")), "", self)
         self.save_as_act.setToolTip("Save As")
         self.save_as_act.triggered.connect(self.save_file_as)
 
-        self.export_png_act = QAction(QIcon(os.path.join(app_dir, "icons/export.png")), "", self)
+        self.export_png_act = QAction(QIcon(os.path.join(icon_dir, "export.png")), "", self)
         self.export_png_act.setToolTip("Export to PNG")
         self.export_png_act.triggered.connect(self.export_png)
+# ...existing code...
         
     def create_toolbar(self):
         toolbar = QToolBar("Main Toolbar", self)
         toolbar.setIconSize(QSize(24, 24))   
         self.addToolBar(toolbar)
 
-    # Add actions to toolbar
+        # Add actions to toolbar
         toolbar.addAction(self.open_act)
         toolbar.addAction(self.open_folder_act)
         toolbar.addAction(self.save_act)
         toolbar.addAction(self.save_as_act)
         toolbar.addAction(self.export_png_act)
 
-    # Example: keep your "Convert PNG to TIM" tool too
-        convert_act = QAction(QIcon(os.path.join(os.path.dirname(__file__), "icons/convert.png")), "", self)
+        # Convert PNG to TIM button
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        icon_dir = os.path.join(app_dir, "icons")
+        convert_icon_path = os.path.join(icon_dir, "save_as.png")
+        convert_act = QAction(QIcon(convert_icon_path), "Convert PNG to TIM", self)
         convert_act.setToolTip("Convert PNG to TIM")
         convert_act.triggered.connect(self.convert_png_to_tim)
         toolbar.addAction(convert_act)
@@ -338,12 +344,6 @@ class MainWindow(QMainWindow):
             self.current_file = path; self.palette_mode = False; self.palette_dock.hide()
             self.update_canvas()
 
-    def create_toolbar(self):
-        toolbar = QToolBar("Tools", self)
-        self.addToolBar(toolbar)
-        convert_act = QAction("Convert PNG to TIM", self)
-        convert_act.triggered.connect(self.convert_png_to_tim)
-        toolbar.addAction(convert_act)
    
     def convert_png_to_tim(self):
         if not self.image_info or self.image_info['bpp'] != 24 or self.image_info['clut'] is not None:
