@@ -1,4 +1,3 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <img src="ico.png" alt="App Icon" width="100"/>
 
@@ -92,3 +91,4 @@ python ppainter.py
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
