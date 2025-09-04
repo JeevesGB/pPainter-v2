@@ -95,13 +95,15 @@ python ppainter.py
 ## Screenshots:
 
 <p align="center">
-  <img src="docs/img-1.png.png" alt="img-1" width="200"/>
+  <img src="docs/img-1.png" alt="img-1" width="200"/>
 </p>
+
 <p align="center">
-  <img src="docs/img-2.png.png" alt="img-2" width="200"/>
+  <img src="docs/img-2.png" alt="img-2" width="200"/>
 </p>
+
 <p align="center">
-  <img src="docs/img-3.png.png" alt="img-3" width="200"/>
+  <img src="docs/img-3.png" alt="img-3" width="200"/>
 </p>
 
 ## License
