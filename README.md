@@ -1,6 +1,8 @@
+
 <p align="centre">
 <img src="ico.png" alt="App Icon" width="100"/>
 </p>
+
 # TIMage (pPainter)
 
 A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette manipulation, and exporting to common image formats.
