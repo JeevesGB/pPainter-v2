@@ -10,7 +10,7 @@ from PyQt6.QtGui import QImage, QPixmap, QColor, QPalette, QAction
 from PyQt6.QtCore import Qt
 from PIL import Image
 
-
+ 
 
 def prompt_tim_bpp(parent):
     items = ["4 bpp (16 colors)", "8 bpp (256 colors)", "16 bpp (High Color)", "24 bpp (True Color)"]
