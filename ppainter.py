@@ -207,6 +207,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("ppainter-v1.0.1")
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        icon_path = os.path.join(app_dir, "ico.ico")
+        self.setWindowIcon(QIcon(icon_path))
         self.image_info = None
         self.current_file = None
         self.palette_mode = False
@@ -237,7 +240,6 @@ class MainWindow(QMainWindow):
         self.create_palette_editor()
         self.create_file_browser()
 
-    # ...existing code...
     def create_actions(self):
         app_dir = os.path.dirname(os.path.abspath(__file__))
         icon_dir = os.path.join(app_dir, "icons")
@@ -261,21 +263,18 @@ class MainWindow(QMainWindow):
         self.export_png_act = QAction(QIcon(os.path.join(icon_dir, "export.png")), "", self)
         self.export_png_act.setToolTip("Export to PNG")
         self.export_png_act.triggered.connect(self.export_png)
-# ...existing code...
         
     def create_toolbar(self):
         toolbar = QToolBar("Main Toolbar", self)
         toolbar.setIconSize(QSize(24, 24))   
         self.addToolBar(toolbar)
 
-        # Add actions to toolbar
         toolbar.addAction(self.open_act)
         toolbar.addAction(self.open_folder_act)
         toolbar.addAction(self.save_act)
         toolbar.addAction(self.save_as_act)
         toolbar.addAction(self.export_png_act)
 
-        # Convert PNG to TIM button
         app_dir = os.path.dirname(os.path.abspath(__file__))
         icon_dir = os.path.join(app_dir, "icons")
         convert_icon_path = os.path.join(icon_dir, "save_as.png")
@@ -290,7 +289,6 @@ class MainWindow(QMainWindow):
         self.file_list.itemDoubleClicked.connect(self.open_file_from_list)
         self.file_dock.setWidget(self.file_list)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.file_dock)
-    #    self.file_dock.hide()
         
     def open_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
@@ -308,11 +306,10 @@ class MainWindow(QMainWindow):
             self.file_dock.show()
 
     def open_file_from_list(self, item):
-        path = item.data(Qt.ItemDataRole.UserRole)  # get full path from hidden data
+        path = item.data(Qt.ItemDataRole.UserRole)
         self.open_file_from_path(path)
 
     def open_file_from_path(self, path):
-        # Reuse your existing open_file logic but without QFileDialog
         if path.lower().endswith(".tim"):
             try:
                 info = load_tim(path)
@@ -344,7 +341,6 @@ class MainWindow(QMainWindow):
             self.current_file = path; self.palette_mode = False; self.palette_dock.hide()
             self.update_canvas()
 
-   
     def convert_png_to_tim(self):
         if not self.image_info or self.image_info['bpp'] != 24 or self.image_info['clut'] is not None:
             return  # Only allow conversion for loaded PNGs (24bpp, no palette)
@@ -411,7 +407,6 @@ class MainWindow(QMainWindow):
         self.palette_table.cellClicked.connect(self.select_palette_color)
         self.palette_dock.setWidget(self.palette_table)
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.palette_dock)
-    #    self.palette_dock.hide()
 
     def open_file(self):
         path, _ = QFileDialog.getOpenFileName(self, "Open Image", "",
@@ -646,7 +641,6 @@ class MainWindow(QMainWindow):
                                               "TIM (*.tim);;PNG (*.png);;BMP (*.bmp);;JPEG (*.jpg)")
         if not path: return
         if path.lower().endswith(".tim"):
-            # If image is not already indexed/palette, prompt for bit depth and quantize if needed
             if self.image_info['clut'] is None and self.image_info['bpp'] == 24:
                 bpp = prompt_tim_bpp(self)
                 if bpp is None: return
