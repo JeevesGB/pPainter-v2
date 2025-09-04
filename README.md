@@ -6,7 +6,8 @@
 
 #
 
-## 
+## Contents
+
 - [What is pPainter?](#what-is-ppainter)
 - [How To Use](#how-to-use)
 - [Features](#features)
