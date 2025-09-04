@@ -6,12 +6,12 @@
 
 #
 
-## TIMage (pPainter)
+## "What is pPainter?"
 
 A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette manipulation, and exporting to common image formats.
 
 
-## How To Use
+## How To Use:
 
 - Run [GTVolTools](https://github.com/adeyblue/GTVolTools/releases/tag/v1) 
 
@@ -32,21 +32,21 @@ A simple PSX TIM image editor/viewer built with PyQt6. Supports editing, palette
 - Run the new .BIN file in duckstation. 
 
 
-## Features
+## Features:
 
 - Open and edit PSX TIM files (4/8/16/24 bpp)
 - Palette editing for indexed images
 - Export to PNG, 
 - Save as TIM or standard image formats 
 
-## Credits
+## Credits:
 
 - [GTModding-Hub](https://nenkai.github.io/gt-modding-hub/ps1/gt2/tools/#tools)
 - [Adeyblue](https://github.com/adeyblue)
 - [Pez2k](https://github.com/pez2k)
 - [GTModding-Discord](https://discord.com/invite/YbJjbYEKzB)
 
-## Requirements
+## Requirements:
 
 - Python 3.8+
 - [PyQt6](https://pypi.org/project/PyQt6/)
@@ -58,7 +58,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## Running
+## Running:
 
 To run the program:
 
@@ -66,7 +66,7 @@ To run the program:
 python ppainter.py
 ```
 
-## Building the Executable (.exe)
+## Building the Executable (.exe):
 
 1. Install PyInstaller if not already installed:
 
@@ -84,7 +84,7 @@ python ppainter.py
 
 3. (Optional) To include the icon and other resources, make sure they are in the same directory as the `.exe` or specify them in the PyInstaller spec file.
 
-## Files
+## Files:
 
 - `ppainter.py` - Main application source
 - `requirements.txt` - Python dependencies
