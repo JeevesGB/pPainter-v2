@@ -12,6 +12,16 @@ from PyQt6.QtGui import QImage, QPixmap, QColor, QPalette, QAction
 from PyQt6.QtCore import Qt, QSize 
 from PIL import Image
 
+def resource_path(relative_path: str) -> str:
+    """Get absolute path to resource (works for dev and for PyInstaller)."""
+    import sys, os
+    try:
+        base_path = sys._MEIPASS  # PyInstaller’s temp folder
+    except AttributeError:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 def prompt_tim_bpp(parent):
     items = ["4 bpp (16 colors)", "8 bpp (256 colors)", "16 bpp (High Color)", "24 bpp (True Color)"]
     item, ok = QInputDialog.getItem(parent, "Select TIM Bit Depth", "Bit Depth:", items, 3, False)
@@ -208,7 +218,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("ppainter-v1.0.1")
         app_dir = os.path.dirname(os.path.abspath(__file__))
-        icon_path = os.path.join(app_dir, "ico.ico")
+        icon_path = resource_path("ico.ico")
         self.setWindowIcon(QIcon(icon_path))
         self.image_info = None
         self.current_file = None
@@ -220,7 +230,7 @@ class MainWindow(QMainWindow):
 
         self.canvas = Canvas(self)
         app_dir = os.path.dirname(os.path.abspath(__file__))
-        bg_path = os.path.join(app_dir, "ico.png").replace("\\", "/")
+        bg_path = resource_path("ico.png").replace("\\", "/")
 
         self.canvas.setStyleSheet(
             f"QLabel {{"
