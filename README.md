@@ -92,6 +92,18 @@ python ppainter.py
 - `ppainter.spec` - PyInstaller build specification (optional)
 - `build/` - Build output directory
 
+## Screenshots:
+
+<p align="center">
+  <img src="docs/img-1.png.png" alt="pPainter Logo" width="200"/>
+</p>
+<p align="center">
+  <img src="docs/img-2.png.png" alt="pPainter Logo" width="200"/>
+</p>
+<p align="center">
+  <img src="docs/img-3.png.png" alt="pPainter Logo" width="200"/>
+</p>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
