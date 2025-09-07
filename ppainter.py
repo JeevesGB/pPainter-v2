@@ -1,16 +1,20 @@
 import os
 import sys
 import struct
+import subprocess
+import json  
 import PyQt6
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QFileDialog, QLabel, QColorDialog, QToolBar,
     QVBoxLayout, QWidget, QDockWidget, QTableWidget, QTableWidgetItem,
-    QHeaderView, QSizePolicy, QInputDialog, QListWidget, QListWidgetItem
+    QHeaderView, QSizePolicy, QInputDialog, QListWidget, QListWidgetItem,
+    QMessageBox 
 )
 from PyQt6.QtGui import QImage, QPixmap, QColor, QPalette, QAction
-from PyQt6.QtCore import Qt, QSize 
+from PyQt6.QtCore import Qt, QSize, QStandardPaths  
 from PIL import Image
+
 
 def resource_path(relative_path: str) -> str:
     """Get absolute path to resource (works for dev and for PyInstaller)."""
@@ -21,6 +25,32 @@ def resource_path(relative_path: str) -> str:
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+def _config_path() -> str:
+    """Return a writable per-user config path (works in dev and PyInstaller)."""
+    base = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+    if not base:
+        base = os.path.expanduser("~/.ppainter")
+    os.makedirs(base, exist_ok=True)
+    return os.path.join(base, "ppainter_config.json")
+
+def load_config() -> dict:
+    path = _config_path()
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_config(cfg: dict) -> None:
+    path = _config_path()
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, indent=2)
+    except Exception:
+        pass
 
 def prompt_tim_bpp(parent):
     items = ["4 bpp (16 colors)", "8 bpp (256 colors)", "16 bpp (High Color)", "24 bpp (True Color)"]
@@ -228,6 +258,9 @@ class MainWindow(QMainWindow):
         self.eraser_color = QColor(0,0,0,0)
         self.brush_index = 0
 
+        # NEW: config
+        self.config = load_config()
+
         self.canvas = Canvas(self)
         app_dir = os.path.dirname(os.path.abspath(__file__))
         bg_path = resource_path("ico.png").replace("\\", "/")
@@ -249,6 +282,16 @@ class MainWindow(QMainWindow):
         self.create_toolbar()
         self.create_palette_editor()
         self.create_file_browser()
+
+        # NEW: Ask once on first run to link GTVolTools
+        if "voltools_path" not in self.config:
+            reply = QMessageBox.question(
+                self, "Link GTVolTools?",
+                "Would you like to link GTVolTools so it can be launched from ppainter?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if reply == QMessageBox.StandardButton.Yes:
+                self._prompt_and_save_voltools_path()
 
     def create_actions(self):
         app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -285,6 +328,13 @@ class MainWindow(QMainWindow):
         toolbar.addAction(self.save_as_act)
         toolbar.addAction(self.export_png_act)
 
+        # --- GTVolTools launcher: always present, icon changes ---
+        self.voltools_act = QAction(self)
+        self.voltools_act.setToolTip("Launch GTVolTools (click to link if unlinked)")
+        self.voltools_act.triggered.connect(self.on_voltools_clicked)
+        self._update_voltools_icon()  # NEW
+        toolbar.addAction(self.voltools_act)
+
         app_dir = os.path.dirname(os.path.abspath(__file__))
         icon_dir = os.path.join(app_dir, "icons")
         convert_icon_path = os.path.join(icon_dir, "save_as.png")
@@ -292,6 +342,53 @@ class MainWindow(QMainWindow):
         convert_act.setToolTip("Convert PNG to TIM")
         convert_act.triggered.connect(self.convert_png_to_tim)
         toolbar.addAction(convert_act)
+
+        # NEW
+    def _voltools_path(self) -> str | None:
+        path = self.config.get("voltools_path")
+        if path and os.path.isfile(path):
+            return path
+        return None
+
+    # NEW
+    def _update_voltools_icon(self):
+        app_dir = os.path.dirname(os.path.abspath(__file__))
+        icon_dir = os.path.join(app_dir, "icons")
+        icon_name = "voltools_linked.png" if self._voltools_path() else "voltools_unlinked.png"
+        self.voltools_act.setIcon(QIcon(os.path.join(icon_dir, icon_name)))
+
+    # NEW
+    def _prompt_and_save_voltools_path(self):
+        # Default Windows filter first; still allow all files so users on other OSes can pick scripts if needed
+        exe_path, _ = QFileDialog.getOpenFileName(
+            self, "Select GTVolTools executable",
+            "", "GTVolTools (GTVolToolGui.exe);;Executables (*.exe);;All Files (*)"
+        )
+        if exe_path:
+            self.config["voltools_path"] = exe_path
+            save_config(self.config)
+            self._update_voltools_icon()
+
+    # NEW
+    def on_voltools_clicked(self):
+        path = self._voltools_path()
+        if not path:
+            # Not linked yet → offer to link now
+            reply = QMessageBox.question(
+                self, "Link GTVolTools?",
+                "GTVolTools is not linked. Would you like to select it now?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if reply == QMessageBox.StandardButton.Yes:
+                self._prompt_and_save_voltools_path()
+            return
+
+        # Linked → launch
+        try:
+            subprocess.Popen([path])
+        except Exception as e:
+            QMessageBox.warning(self, "Failed to launch GTVolTools", f"{e}")
+
     
     def create_file_browser(self):
         self.file_dock = QDockWidget("Files", self)
@@ -299,6 +396,13 @@ class MainWindow(QMainWindow):
         self.file_list.itemDoubleClicked.connect(self.open_file_from_list)
         self.file_dock.setWidget(self.file_list)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.file_dock)
+        
+    def launch_voltools(self):
+        voltools_path = r"C:\Path\To\GTVolTools\GTVolToolGui.exe"
+        try:
+            subprocess.Popen([voltools_path])
+        except Exception as e:
+            print(f"Failed to launch GTVolTools: {e}")
         
     def open_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
